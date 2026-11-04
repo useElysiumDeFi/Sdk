@@ -1,0 +1,56 @@
+{
+  "name": "@elysiumdefi/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for ElysiumSwap (DEX) and ElysiumPad (launchpad) on Elysium",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:live": "ELYSIUM_LIVE=1 vitest run test/live.test.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "keywords": [
+    "elysium",
+    "elysiumswap",
+    "elysiumpad",
+    "hyperliquid",
+    "hype",
+    "dex",
+    "launchpad",
+    "viem"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/useElysiumDeFi/Sdk.git"
+  },
+  "homepage": "https://github.com/useElysiumDeFi/Sdk#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "typescript": "5.6.3",
+    "viem": "2.21.54",
+    "vitest": "2.1.9"
+  }
+}
