@@ -1,6 +1,7 @@
 import { createPublicClient, fallback, http, type PublicClient } from 'viem'
 import { MarketApi } from './api/market.js'
 import { PadApi } from './api/pad.js'
+import { PrivacyApi } from './api/privacy.js'
 import { ADDRESSES, API_URLS, elysium, type Addresses } from './constants.js'
 import { Dex } from './dex.js'
 import { Launchpad } from './launchpad.js'
@@ -17,6 +18,8 @@ export type ElysiumClientOptions = {
   marketApiUrl?: string
   /** Override the ElysiumPad API URL (default https://api.elysiumpad.fun). */
   padApiUrl?: string
+  /** Override the ElysiumSwap Private API URL (default https://privacy.elysiumswap.finance). */
+  privacyApiUrl?: string
   /** API request timeout in milliseconds (default 10 000). */
   apiTimeoutMs?: number
   /** A fetch implementation for the API clients (default: the global fetch). */
@@ -31,11 +34,12 @@ export type ElysiumClient = {
   publicClient: PublicClient
   market: MarketApi
   padApi: PadApi
+  privacyApi: PrivacyApi
   dex: Dex
   launchpad: Launchpad
 }
 
-/** Everything in one place: chain, addresses, both API clients, and the DEX and launchpad modules. */
+/** Everything in one place: chain, addresses, the API clients, and the DEX and launchpad modules. */
 export function createElysiumClient(o: ElysiumClientOptions = {}): ElysiumClient {
   const urls = o.rpcUrl === undefined ? [...elysium.rpcUrls.default.http] : Array.isArray(o.rpcUrl) ? o.rpcUrl : [o.rpcUrl]
   const publicClient =
@@ -53,6 +57,7 @@ export function createElysiumClient(o: ElysiumClientOptions = {}): ElysiumClient
     publicClient,
     market,
     padApi,
+    privacyApi: new PrivacyApi({ baseUrl: o.privacyApiUrl ?? API_URLS.privacy, timeoutMs: o.apiTimeoutMs, fetch: o.fetch }),
     dex: new Dex(publicClient, market, addresses),
     launchpad: new Launchpad(publicClient, padApi, addresses),
   }

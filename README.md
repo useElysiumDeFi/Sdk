@@ -4,7 +4,8 @@ TypeScript SDK for **ElysiumSwap** (DEX) and **ElysiumPad** (launchpad) on Elysi
 
 - **Swaps:** the best split route across every DEX on Elysium, re-quoted on-chain before you trade, plus direct ElysiumSwap v2/v3 swaps.
 - **ElysiumPad:** instant and bonding-curve launches, curve trading (before and after graduation), and creator fees.
-- **Data:** typed clients for the market API and the ElysiumPad API.
+- **ElysiumSwap Private:** pool state, the approved set and pool history, plus stealth payments (ERC-5564 / ERC-6538 pay IDs).
+- **Data:** typed clients for the market API, the ElysiumPad API and the ElysiumSwap Private API.
 - **Transactions:** every action is returned as plain data (`{ call, approval }`) for you to send, or `execute()` sends it for you.
 
 ElysiumSwap and ElysiumPad are independent projects built on Elysium. They are not affiliated with, or endorsed by, Elysium or Kinetiq.
@@ -12,10 +13,10 @@ ElysiumSwap and ElysiumPad are independent projects built on Elysium. They are n
 ## Install
 
 ```sh
-npm install github:useElysiumDeFi/Sdk#v0.1.0 viem
+npm install github:useElysiumDeFi/Sdk#v0.2.0 viem
 ```
 
-You need Node 18 or later; `viem` is a peer dependency. Releases are tagged (`v0.1.0`, …); see [CHANGELOG.md](CHANGELOG.md).
+You need Node 18 or later; `viem` is a peer dependency. Releases are tagged (`v0.2.0`, …); see [CHANGELOG.md](CHANGELOG.md).
 
 ## Quick start
 
@@ -139,6 +140,48 @@ const tx = await elysium.launchpad.buildCurveTrade({ token, side: 'buy', amountI
 - `curveQuotes()`: pair tokens for bonding curves, with their start and graduation market caps.
 - `curveState(token)`: a curve token's curve, pair, tax, progress and graduation status.
 
+## ElysiumSwap Private
+
+[ElysiumSwap Private](https://docs.elysiumswap.finance/swap/private.html) lets people hold HYPE and USDC privately, then withdraw, swap, pay or launch without linking it to their wallet. Private spending needs zero-knowledge proofs made with the account's secrets, which the ElysiumSwap and ElysiumPad apps do in the browser. The SDK covers the public side.
+
+### Data
+
+```ts
+const config = await elysium.privacyApi.config()
+// pools (balances, minimum deposits, fee caps), relayer fee and contracts, screening timing
+const set = await elysium.privacyApi.approvedSet() // deposit labels that passed screening
+```
+
+Also `leaves`, `deposits`, `withdrawals` and `ragequits` per pool (to rebuild the commitment trees), and `announcements` (stealth payments). `market.overview()` now splits ElysiumSwap's TVL into `ammTvlUsd` and `privateTvlUsd`.
+
+### Stealth payments
+
+Pay anyone at a fresh one-time address that only they can find, using their pay ID (`st:eth:0x…`). Payments made this way show up in the recipient's ElysiumSwap Private account.
+
+```ts
+import { buildStealthPayment, lookupPayId, NATIVE } from '@elysiumdefi/sdk'
+
+const payId = await lookupPayId(elysium.publicClient, '0xRecipientWallet…') // or one they shared with you
+const pay = buildStealthPayment({ payId: payId!, asset: NATIVE, amount: parseEther('1') })
+await wallet.sendTransaction(pay.transfer) // 1: pay the one-time address
+await wallet.sendTransaction(pay.announce) // 2: announce it, so the recipient finds it
+```
+
+These payments come from your wallet, so the payer is public; the recipient isn't. To receive with your own keys:
+
+```ts
+import { randomStealthKeys, metaAddress, buildRegisterPayId, checkAnnouncement } from '@elysiumdefi/sdk'
+
+const keys = randomStealthKeys() // keep secret
+const myPayId = metaAddress(keys)
+await wallet.sendTransaction(buildRegisterPayId(keys)) // optional: publish it for your wallet address
+
+const { announcements } = await elysium.privacyApi.announcements({ from: 0 })
+for (const a of announcements) {
+  const key = checkAnnouncement(a, keys) // the one-time address's private key, or null
+}
+```
+
 ## Data APIs
 
 `elysium.market` (ElysiumSwap market API):
@@ -163,6 +206,15 @@ const tx = await elysium.launchpad.buildCurveTrade({ token, side: 'buy', amountI
 - `traders`
 - `account(address)`
 
+`elysium.privacyApi` (ElysiumSwap Private API):
+- `config`
+- `approvedSet`
+- `leaves(pool)`
+- `deposits(pool)`
+- `withdrawals(pool)`
+- `ragequits(pool)`
+- `announcements`
+
 Failed requests throw `ElysiumApiError`, which carries the HTTP status. The APIs are read-only and public for server-side use. Browser apps on other domains are blocked by the APIs' allowed-origins list.
 
 ## Addresses
@@ -179,7 +231,7 @@ npm run build
 ELYSIUM_LIVE=1 npx vitest run test/live.test.ts   # read-only checks against mainnet
 ```
 
-The live tests dry-run (with `eth_call`) a real swap and a curve buy built by the SDK. Nothing is signed or sent.
+The live tests dry-run (with `eth_call`) a real swap and a curve buy built by the SDK, and read the privacy API. Nothing is signed or sent.
 
 ## License
 

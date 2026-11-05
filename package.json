@@ -1,7 +1,7 @@
 {
   "name": "@elysiumdefi/sdk",
-  "version": "0.1.0",
-  "description": "TypeScript SDK for ElysiumSwap (DEX) and ElysiumPad (launchpad) on Elysium",
+  "version": "0.2.0",
+  "description": "TypeScript SDK for ElysiumSwap (DEX, private balances) and ElysiumPad (launchpad) on Elysium",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -52,5 +52,8 @@
     "typescript": "5.6.3",
     "viem": "2.21.54",
     "vitest": "2.1.9"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.7.0"
   }
 }

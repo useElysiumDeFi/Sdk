@@ -36,11 +36,25 @@ export const ADDRESSES = {
     curveTokenImpl: '0x8aFB6A16374520923a6749F32D7E722d0A16CfEa',
     curveImpl: '0x5cF201Fda7771878FfC68958b2cC28A619421a92',
   },
+  /** ElysiumSwap Private (Privacy Pools) and the canonical stealth-address contracts. */
+  privacy: {
+    entrypoint: '0xfBa04Fd6819637F8b997223231C92c9938817934',
+    hypePool: '0x1632E997BBf5D9885fCa2694751bb466C10AE2E4',
+    usdcPool: '0xB06FfA7Fd64268e2605eFfa26883A5D508C83311',
+    privateSwap: '0x252C8C653d1c5bf0fce70C0FB49a681271B9e32C',
+    privatePay: '0x8afdCE86be64AB3fbB34FEf0Ef22b98bde9A839A',
+    privateLaunch: '0x75331Ff93469B86f0039A414A1a129537b96fF3F',
+    /** ERC-5564 announcer. */
+    stealthAnnouncer: '0x55649E01B5Df198D18D95b5cc5051630cfD45564',
+    /** ERC-6538 registry: wallet address -> stealth meta-address ("pay ID"). */
+    stealthRegistry: '0x6538E6bf4B0eBd30A8Ea093027Ac2422ce5d6538',
+  },
 } as const satisfies {
   WHYPE: Address
   USDC: Address
   dex: Record<string, Address>
   pad: Record<string, Address>
+  privacy: Record<string, Address>
 }
 
 export type Addresses = {
@@ -48,15 +62,17 @@ export type Addresses = {
   USDC: Address
   dex: { [K in keyof typeof ADDRESSES.dex]: Address }
   pad: { [K in keyof typeof ADDRESSES.pad]: Address }
+  privacy: { [K in keyof typeof ADDRESSES.privacy]: Address }
 }
 
 /** Blocks the contracts were deployed at: where log scans can start. */
-export const START_BLOCKS = { v2Factory: 139_223n, v3Factory: 139_258n, launcher: 139_422n, aggregator: 141_305n, curveLauncher: 161_259n } as const
+export const START_BLOCKS = { v2Factory: 139_223n, v3Factory: 139_258n, launcher: 139_422n, aggregator: 141_305n, curveLauncher: 161_259n, privacy: 780_558n } as const
 
-/** Public APIs (read-only). */
+/** Public APIs (read-only, except the privacy relayer). */
 export const API_URLS = {
   market: 'https://api.elysiumswap.finance',
   pad: 'https://api.elysiumpad.fun',
+  privacy: 'https://privacy.elysiumswap.finance',
 } as const
 
 /** Fixed in the Aggregator: 0.1 % of each trade. */

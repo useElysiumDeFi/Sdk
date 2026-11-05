@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0
+
+ElysiumSwap Private.
+
+- **Addresses:** `ADDRESSES.privacy` (Entrypoint, HYPE and USDC pools, PrivateSwap, PrivatePay, PrivateLaunch, the ERC-5564 announcer and the ERC-6538 registry) and `START_BLOCKS.privacy`.
+- **Privacy API (`elysium.privacyApi`):** pool state and limits, relayer fee, screening timing, the approved set, per-pool leaves, deposits, withdrawals and ragequits, and stealth announcements.
+- **Stealth payments:** generate one-time addresses from a pay ID, build the payment and announcement, look up or publish a pay ID, and scan announcements with your keys. Matches the ERC-5564 reference implementation.
+- **Market API:** `overview()` now includes the private pools in `ownTvlUsd`, split into `ammTvlUsd` and `privateTvlUsd`.
+- **New dependency:** `@noble/curves` (already used by viem).
+
 ## 0.1.0
 
 First release.

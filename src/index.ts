@@ -17,7 +17,32 @@ export {
   type PadTax,
   type PadTrade,
 } from './api/pad.js'
+export {
+  PrivacyApi,
+  type PrivacyApprovedSet,
+  type PrivacyConfig,
+  type PrivacyDeposit,
+  type PrivacyPool,
+  type PrivacyRagequit,
+  type PrivacyWithdrawal,
+  type StealthAnnouncement,
+} from './api/privacy.js'
 export { ElysiumApiError } from './api/http.js'
+export {
+  STEALTH_SCHEME_ID,
+  buildRegisterPayId,
+  buildStealthPayment,
+  checkAnnouncement,
+  decodeMetadata,
+  encodeMetadata,
+  generateStealthAddress,
+  lookupPayId,
+  metaAddress,
+  metaAddressBytes,
+  parseMetaAddress,
+  randomStealthKeys,
+  type StealthKeys,
+} from './stealth.js'
 export { Dex, RouteCheckError, type AggLeg, type AggPath, type SwapQuote } from './dex.js'
 export { Launchpad, LaunchError, toTaxConfig, type CurveState, type CurveTradeQuote, type LaunchMeta, type TaxConfig, type TaxSettings } from './launchpad.js'
 export { approveCall, execute, needsApproval } from './tx.js'

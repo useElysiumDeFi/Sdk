@@ -10,6 +10,7 @@ export const erc20Abi = parseAbi([
   'function balanceOf(address) view returns (uint256)',
   'function allowance(address owner, address spender) view returns (uint256)',
   'function approve(address spender, uint256 amount) returns (bool)',
+  'function transfer(address to, uint256 amount) returns (bool)',
 ])
 
 export const wethAbi = parseAbi(['function deposit() payable', 'function withdraw(uint256 wad)'])
@@ -137,4 +138,16 @@ export const taxTokenAbi = parseAbi([
   'function liquidityPending() view returns (uint256)',
   'function migrated() view returns (bool)',
   'function addLiquidity()',
+])
+
+/** ERC-5564 announcer (stealth payments). */
+export const stealthAnnouncerAbi = parseAbi([
+  'function announce(uint256 schemeId, address stealthAddress, bytes ephemeralPubKey, bytes metadata)',
+  'event Announcement(uint256 indexed schemeId, address indexed stealthAddress, address indexed caller, bytes ephemeralPubKey, bytes metadata)',
+])
+
+/** ERC-6538 registry: wallet address -> stealth meta-address. */
+export const stealthRegistryAbi = parseAbi([
+  'function stealthMetaAddressOf(address registrant, uint256 schemeId) view returns (bytes)',
+  'function registerKeys(uint256 schemeId, bytes stealthMetaAddress)',
 ])

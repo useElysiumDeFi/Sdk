@@ -17,6 +17,18 @@ describe.skipIf(!live)('live: APIs', () => {
     expect(Array.isArray(pools)).toBe(true)
   })
 
+  it('privacy config and approved set', async () => {
+    const c = await client.privacyApi.config()
+    expect(c.chainId).toBe(99_901)
+    expect(c.entrypoint.toLowerCase()).toBe(ADDRESSES.privacy.entrypoint.toLowerCase())
+    const pools = c.pools.map((p) => p.address.toLowerCase())
+    expect(pools).toContain(ADDRESSES.privacy.hypePool.toLowerCase())
+    expect(pools).toContain(ADDRESSES.privacy.usdcPool.toLowerCase())
+    expect(Array.isArray((await client.privacyApi.approvedSet()).labels)).toBe(true)
+    const o = await client.market.overview()
+    expect(o.privatePools).toBe(2)
+  })
+
   it('pad snapshot', async () => {
     const s = await client.padApi.snapshot()
     expect(s.hypeUsd).toBeGreaterThan(0)

@@ -94,8 +94,14 @@ export type OwnPool = {
 
 export type MarketOverview = {
   now: number
-  /** Liquidity in ElysiumSwap's own pools. */
+  /** ElysiumSwap's TVL: its v2 and v3 pools plus its private pools. */
   ownTvlUsd: number
+  /** The v2 and v3 pools' part of ownTvlUsd. */
+  ammTvlUsd?: number
+  /** The ElysiumSwap Private pools' part of ownTvlUsd. */
+  privateTvlUsd?: number
+  privatePools?: number
+  /** ElysiumSwap v2 and v3 pools. */
   ownPools: number
   /** Liquidity across every DEX on Elysium. */
   tvlUsd: number
