@@ -5,7 +5,7 @@ export const elysium = defineChain({
   id: 99901,
   name: 'Elysium',
   nativeCurrency: { name: 'HYPE', symbol: 'HYPE', decimals: 18 },
-  rpcUrls: { default: { http: ['https://rpc.elysiumswap.finance', 'https://rpc-live.elysp.com'] } },
+  rpcUrls: { default: { http: ['https://rpc.elysium.kinetiq.xyz'] } },
 })
 
 /** Stands for native HYPE wherever a token address is expected (the usual 0xEeee… convention). */

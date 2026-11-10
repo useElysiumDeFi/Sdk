@@ -13,10 +13,10 @@ ElysiumSwap and ElysiumPad are independent projects built on Elysium. They are n
 ## Install
 
 ```sh
-npm install github:useElysiumDeFi/Sdk#v0.2.0 viem
+npm install github:useElysiumDeFi/Sdk#v0.2.1 viem
 ```
 
-You need Node 18 or later; `viem` is a peer dependency. Releases are tagged (`v0.2.0`, …); see [CHANGELOG.md](CHANGELOG.md).
+You need Node 18 or later; `viem` is a peer dependency. Releases are tagged (`v0.2.1`, …); see [CHANGELOG.md](CHANGELOG.md).
 
 ## Quick start
 
@@ -26,7 +26,7 @@ import { createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const elysium = createElysiumClient() // public RPC and APIs
-// For bots and backends, use a keyed RPC: createElysiumClient({ rpcUrl: 'https://rpc.elysiumswap.finance/<key>' })
+// Any Elysium RPC works: createElysiumClient({ rpcUrl: 'https://rpc.elysium.kinetiq.xyz' })
 
 // Market data
 const { tokens } = await elysium.market.tokens()

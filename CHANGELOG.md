@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+Elysium's RPC.
+
+- **Default RPC:** The `elysium` chain and `createElysiumClient()` now use Elysium's public RPC, `https://rpc.elysium.kinetiq.xyz`. `rpc.elysiumswap.finance` and `rpc-live.elysp.com` are retired. Pass `rpcUrl` to use a different RPC.
+
 ## 0.2.0
 
 ElysiumSwap Private.

@@ -10,8 +10,7 @@ export type ElysiumClientOptions = {
   /** Your own viem public client for Elysium. If omitted, one is created from `rpcUrl`. */
   publicClient?: PublicClient
   /**
-   * RPC endpoint(s), tried in order. Default: the public relay (keyless, rate-limited per IP), then Elysium's public
-   * RPC. For bots and backends, use an API-key URL (https://rpc.elysiumswap.finance/<key>).
+   * RPC endpoint(s), tried in order. Default: Elysium's public RPC (https://rpc.elysium.kinetiq.xyz).
    */
   rpcUrl?: string | string[]
   /** Override the market API URL (default https://api.elysiumswap.finance). */
